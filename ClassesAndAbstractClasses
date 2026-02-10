@@ -1,0 +1,111 @@
+abstract class Figure {
+  public readonly color: string;
+  public readonly name: string;
+
+  constructor(color: string, name: string) {
+    this.color = color;
+    this.name = name;
+  }
+
+  abstract calculateArea(): number;
+  
+}
+
+
+
+class Circle extends Figure {
+  public readonly radius: number;
+
+  constructor(color: string, radius: number) {
+    super(color, "Circle");
+    this.radius = radius;
+  }
+
+  calculateArea(): number {
+    return Math.PI * this.radius * this.radius;
+  }
+}
+
+
+
+class Rectangle extends Figure {
+   public readonly width: number;
+   public readonly height: number
+
+  constructor(
+    color: string, width: number, height: number
+  ) {
+    super(color, "Rectangle");
+    this.width = width;
+    this.height = height;
+  }
+
+  calculateArea(): number {
+    return this.width * this.height;
+  }
+
+  print(): void {
+    console.log(
+      `Area of Rectangle -> width * height -> ${this.width} * ${this.height} = ${this.calculateArea()}`
+    )
+  }
+}
+
+
+
+
+class Square extends Figure {
+  public readonly side: number;
+
+  constructor(color: string, side: number) {
+    super(color, "Square");
+    this.side = side;
+  }
+
+  calculateArea(): number {
+    return this.side * this.side;
+  }
+
+  print(): void {
+    console.log(
+      `Area of Square -> side * side -> ${this.side} * ${this.side} = ${this.calculateArea()}`
+    );
+  }
+}
+
+
+
+class Triangle extends Figure {
+  public readonly base: number;
+  public readonly height: number;
+
+
+  constructor(
+    color: string,
+    base: number,
+    height: number
+  ) {
+    super(color, "Triangle");
+    this.base = base;
+    this.height = height;
+  }
+
+  calculateArea(): number {
+    return 0.5 * this.base * this.height;
+  }
+}
+
+
+const circle = new Circle("brown", 3);
+console.log(circle.name, circle.calculateArea());
+
+const rectangle = new Rectangle("grey", 3, 6);
+rectangle.print();
+console.log(rectangle.name, rectangle.calculateArea());
+
+const square = new Square("green", 3);
+square.print();
+console.log(square.name, square.calculateArea());
+
+const triangle = new Triangle("yellow", 3, 6);
+console.log(triangle.name, triangle.calculateArea());
