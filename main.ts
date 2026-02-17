@@ -47,14 +47,21 @@ interface ChatMessage {
 }
 
 function isChatMessage(data: unknown): boolean {
-  return (
-    //base validation
-    typeof data === 'object' && data !== null
-    //'text' param validation
-    && 'text' in data && typeof data.text === 'string'
-    //'authorId' param validation
-    && 'authorId' in data && typeof data.authorId === 'number'
-  );
+  if(data === null || typeof data !== 'object') {
+    return false;
+  } else {
+    const hasText =
+      'text' in data 
+      && Object.hasOwn(data, 'text')
+      && typeof data.text === 'string'
+
+    const hasAuthorId =
+      'authorId' in data 
+      && Object.hasOwn(data, 'authorId')
+      && typeof data.authorId === 'number'
+
+    return hasText && hasAuthorId;
+  }
 }
 
 function processMessage(data: unknown): void {
