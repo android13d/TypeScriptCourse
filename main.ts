@@ -32,10 +32,19 @@ function getVehicleCapacity(vehicle: Vehicle): string {
  //     return `Motorcycle${vehicle.hasSidecar ? ' with sidecar' : ' without sidecar'}`;
  //
     default:
-      const _exhaustiveCheck: never = vehicle;
-      throw new Error(`Невідомий тип транспортного засобу: ${(_exhaustiveCheck as any).kind}`);
+      throw new Error(`Unknown vehicle: ${vehicle.kind}`);
   }
 }
+
+
+const car: Vehicle = { kind: 'car', passengers: 5 };
+const truck: Vehicle = { kind: 'truck', cargoWeight: 1200 };
+const moto: Vehicle = { kind: 'motorcycle', hasSidecar: true };
+
+console.log(getVehicleCapacity(car));
+console.log(getVehicleCapacity(truck));
+console.log(getVehicleCapacity(moto));
+
 
 // 2. Ви отримуєте повідомлення через WebSocket, яке має тип unknown. Реалізуйте функцію-захисник типу isChatMessage,
 // яка перевіряє, чи відповідає отриманий об'єкт інтерфейсу ChatMessage. Використовуйте різні оператори
