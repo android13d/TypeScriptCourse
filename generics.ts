@@ -53,7 +53,7 @@ class AnalyticsTracker<E extends EventName, P extends EventPayloads[E] = EventPa
 //    * затінив параметр типу у методі
 //    * повністю втратив типобезпеку при оновленні полів
 
-class FormProcessorExample<T extends object> {
+class FormProcessorExample<T extends any> {
   public data: any;
 
   constructor(data: T) {
@@ -71,7 +71,7 @@ class FormProcessorExample<T extends object> {
 //  2. Перепишіть сигнатуру методу updateField. Він не повинен затінювати параметр класу.
 //  3. Також метод updateField повинен приймати лише існуючі ключі з data та сумісні з ними значення.
 
-class FormProcessor<T extends any> {
+class FormProcessor<T extends object = {}> {
   public data: T;
 
   constructor(data: T) {
