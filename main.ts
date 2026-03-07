@@ -57,24 +57,32 @@ const filmsList = {
     additional: {} as FilmAdditionalFilters,
   },
 
-  applySearchValue(value: string) {
-    this.filters.searchValue = value.trim().toLowerCase();
+applySearchValue(value: string | number) {
+    if (typeof value === 'string') {
+      this.filters.searchValue = value.trim().toLowerCase();
+    } else {
+      this.filters.additional.year = {
+        type: GridFilterTypeEnum.LESS_THAN,
+        filter: value,
+      };
+    }
   },
 
-  getFilteredItems() {
-    const search = this.filters.searchValue.toLowerCase();
+getFilteredItems() {
+  const search = this.filters.searchValue.trim().toLowerCase();
 
-    return this.items.filter((film: Film) => {   // ← виправлено: явний тип замість type predicate
-      const matchesSearch = !search || film.name.toLowerCase().includes(search);
+  return this.items.filter((film: Film) => {
+    if (search && !film.name.toLowerCase().includes(search)) {
+      return false;
+    }
 
-      const y = this.filters.additional.year;
-      let matchesYear = true;
-      if (y) {
-        if (y.type === GridFilterTypeEnum.GREATER_THAN) matchesYear = film.year > y.filter;
-        if (y.type === GridFilterTypeEnum.LESS_THAN)    matchesYear = film.year < y.filter;
-      }
+    const y = this.filters.additional.year;
+    if (y) {
+      if (y.type === GridFilterTypeEnum.GREATER_THAN && film.year <= y.filter) return false;
+      if (y.type === GridFilterTypeEnum.LESS_THAN && film.year >= y.filter) return false;
+    }
 
-      return matchesSearch && matchesYear;
+    return true;
     });
   },
 } satisfies ListState<Film, FilmAdditionalFilters>;
@@ -99,7 +107,8 @@ function getFilmsBySelectedCategory(): readonly Film[] {
 
 
 filmsList.applySearchValue("da vinci");
+//filmsList.applySearchValue(2010);
 selectCategory("Mystery");
 
-console.log("Searched film:", filmsList.getFilteredItems());
+console.log("Searched film/s:", filmsList.getFilteredItems());
 console.log("Category:", getFilmsBySelectedCategory());
